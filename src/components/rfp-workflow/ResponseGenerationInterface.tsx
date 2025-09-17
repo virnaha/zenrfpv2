@@ -70,7 +70,7 @@ const RESPONSE_TEMPLATES = [
   { id: 'comprehensive', name: 'Comprehensive Response', description: 'Detailed answer with examples' },
   { id: 'technical', name: 'Technical Focus', description: 'Technical depth and specifications' },
   { id: 'business', name: 'Business Value', description: 'ROI and business impact focused' },
-  { id: 'competitive', name: 'Competitive Advantage', description: 'Highlight Zenloop differentiators' },
+  { id: 'competitive', name: 'Competitive Advantage', description: 'Highlight zenloop differentiators' },
   { id: 'compliance', name: 'Compliance & Security', description: 'Regulatory and security emphasis' }
 ];
 
@@ -100,6 +100,11 @@ export const ResponseGenerationInterface: React.FC<ResponseGenerationProps> = ({
   const [responses, setResponses] = useState<Map<string, ResponseData>>(new Map());
   const [selectedQuestionId, setSelectedQuestionId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = React.useState('');
+  React.useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(searchTerm), 250);
+    return () => clearTimeout(id);
+  }, [searchTerm]);
   const [filterCategory, setFilterCategory] = useState<string>('all');
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [expandedQuestions, setExpandedQuestions] = useState<Set<string>>(new Set());
@@ -170,7 +175,7 @@ export const ResponseGenerationInterface: React.FC<ResponseGenerationProps> = ({
     responsesMap.set('q1', {
       id: 'resp_q1',
       questionId: 'q1',
-      content: `Zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
+      content: `zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
 
 Our platform provides automated NPS campaign management with smart targeting based on customer journey stages, behavioral triggers, and demographic segmentation. The system automatically distributes surveys via email, SMS, in-app notifications, and web intercepts.
 
@@ -186,7 +191,7 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
       confidence: 94,
       sources: [
         {
-          title: 'Zenloop NPS Product Documentation',
+          title: 'zenloop NPS Product Documentation',
           content: 'Comprehensive guide to NPS survey automation, targeting, and benchmarking features...',
           relevance: 0.96
         },
@@ -205,7 +210,7 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
     responsesMap.set('q2', {
       id: 'resp_q2',
       questionId: 'q2',
-      content: 'Zenloop maintains enterprise-grade security with comprehensive certifications including ISO 27001, SOC 2 Type II, and GDPR compliance...',
+      content: 'zenloop maintains enterprise-grade security with comprehensive certifications including ISO 27001, SOC 2 Type II, and GDPR compliance...',
       confidence: 0,
       sources: [],
       status: 'generating',
@@ -254,15 +259,15 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
     }
   }, [questionExtraction.data, shouldExtractQuestions]);
 
-  const filteredQuestions = questions.filter(q => {
-    const matchesSearch = q.text?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         (q.keywords && q.keywords.some(k => k?.toLowerCase().includes(searchTerm.toLowerCase())));
+  const filteredQuestions = React.useMemo(() => questions.filter(q => {
+    const matchesSearch = q.text?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+                         (q.keywords && q.keywords.some(k => k?.toLowerCase().includes(debouncedSearch.toLowerCase())));
     const matchesCategory = filterCategory === 'all' || (q.category && q.category === filterCategory);
     const response = responses.get(q.id);
     const matchesStatus = filterStatus === 'all' || (response && response.status === filterStatus);
 
     return matchesSearch && matchesCategory && matchesStatus;
-  });
+  }), [questions, debouncedSearch, filterCategory, filterStatus, responses]);
 
   const generateResponse = useCallback(async (questionId: string, template?: string) => {
     const question = questions.find(q => q.id === questionId);
@@ -303,12 +308,11 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
           setResponses(prev => {
             const newMap = new Map(prev);
             const current = newMap.get(questionId);
-            if (current) {
-              newMap.set(questionId, {
-                ...current,
-                content: current.content + chunk
-              });
-            }
+            if (!current) return newMap;
+            newMap.set(questionId, {
+              ...current,
+              content: current.content + chunk
+            });
             return newMap;
           });
         }
@@ -323,7 +327,7 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
       // Mock sources (in real implementation, these would come from RAG)
       const mockSources = [
         {
-          title: 'Zenloop Product Documentation',
+          title: 'zenloop Product Documentation',
           content: 'Comprehensive platform capabilities and features...',
           relevance: 0.95
         },
@@ -352,8 +356,8 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
       setResponses(prev => new Map(prev).set(questionId, finalResponse));
 
       toast({
-        title: "Response Generated",
-        description: `Successfully generated response with ${confidence.toFixed(1)}% confidence`,
+        title: 'Response generated',
+        description: `Generated with ${confidence.toFixed(1)}% confidence.`,
       });
 
     } catch (error) {
@@ -364,6 +368,11 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
       };
       setResponses(prev => new Map(prev).set(questionId, errorResponse));
       onError(`Failed to generate response: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      toast({
+        title: 'Generation failed',
+        description: 'Please try again. If the issue persists, contact support.',
+        variant: 'destructive'
+      });
     }
   }, [questions, responses, project, selectedTemplate, toast, onError]);
 
@@ -409,26 +418,24 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
     await generateResponse(questionId, template);
   }, [responses, generateResponse]);
 
-  const getCompletionStats = useCallback(() => {
+  const stats = React.useMemo(() => {
     const total = questions.length;
-    const completed = Array.from(responses.values()).filter(r => r.status === 'completed').length;
-    const generating = Array.from(responses.values()).filter(r => r.status === 'generating').length;
-    const avgConfidence = Array.from(responses.values())
+    const values = Array.from(responses.values());
+    const completed = values.filter(r => r.status === 'completed').length;
+    const generating = values.filter(r => r.status === 'generating').length;
+    const avgConfidence = values
       .filter(r => r.status === 'completed')
       .reduce((sum, r) => sum + r.confidence, 0) / (completed || 1);
-
     return { total, completed, generating, avgConfidence };
   }, [questions, responses]);
-
-  const stats = getCompletionStats();
 
   return (
     <div className="space-y-6">
       {/* Header with stats and controls */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Response Generation</h2>
-          <p className="text-muted-foreground">Generate professional RFP responses with Zenloop expertise</p>
+          <h2 className="text-2xl font-semibold tracking-tight">response generation</h2>
+          <p className="text-muted-foreground">generate professional rfp responses with zenloop expertise</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-center">
@@ -478,7 +485,7 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
       {/* Filters and search */}
       <Card>
         <CardContent className="pt-6">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 sticky top-0 bg-background z-10 pb-4">
             <div className="flex-1">
               <div className="relative">
                 <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -545,6 +552,11 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
             <CardContent className="p-0">
               <ScrollArea className="h-[600px]">
                 <div className="p-4 space-y-3">
+                  {filteredQuestions.length === 0 && (
+                    <div className="text-sm text-muted-foreground p-6 text-center border rounded">
+                      No questions match your search. <button className="underline" onClick={() => setSearchTerm('')}>Reset</button>
+                    </div>
+                  )}
                   {filteredQuestions.map((question) => {
                     const response = responses.get(question.id);
                     const isExpanded = expandedQuestions.has(question.id);
@@ -553,10 +565,20 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
                     return (
                       <div
                         key={question.id}
-                        className={`border rounded-lg p-3 cursor-pointer transition-colors ${
+                        className={`border rounded-lg p-3 cursor-pointer transition-colors focus:outline-none focus:ring-2 focus:ring-primary ${
                           isSelected ? 'border-primary bg-primary/5' : 'hover:border-gray-300'
                         }`}
                         onClick={() => setSelectedQuestionId(question.id)}
+                        tabIndex={0}
+                        role="button"
+                        aria-pressed={isSelected}
+                        aria-label={`Select question ${question.id}`}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setSelectedQuestionId(question.id);
+                          }
+                        }}
                       >
                         <div className="flex items-start justify-between mb-2">
                           <div className="flex items-center gap-2 flex-1">

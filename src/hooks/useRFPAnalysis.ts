@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { documentAnalyzer, DocumentAnalysis } from '../lib/services/document-analyzer';
 import { rfpAnalyzer } from '../lib/services/rfp-analyzer';
 import { enhancedQuestionExtractor } from '../lib/services/enhanced-question-extractor';
@@ -25,7 +25,7 @@ export interface UseRFPAnalysisProps {
   autoAnalyze?: boolean;
 }
 
-export function useRFPAnalysis({ documentId, autoAnalyze = false }: UseRFPAnalysisProps = {}) {
+export function useRFPAnalysis({ documentId, autoAnalyze: _autoAnalyze = false }: UseRFPAnalysisProps = {}) {
   const [state, setState] = useState<RFPAnalysisState>({
     isAnalyzing: false,
     error: null,
@@ -252,18 +252,18 @@ export function useRFPAnalysis({ documentId, autoAnalyze = false }: UseRFPAnalys
     resetAnalysis,
     cancelAnalysis,
 
-    // Individual mutation states
-    documentAnalysis: {
+    // Individual mutation states (renamed to avoid shadowing state keys)
+    documentAnalysisStatus: {
       isLoading: documentAnalysisMutation.isPending,
       error: documentAnalysisMutation.error,
       data: documentAnalysisMutation.data
     },
-    questionExtraction: {
+    questionExtractionStatus: {
       isLoading: questionExtractionMutation.isPending,
       error: questionExtractionMutation.error,
       data: questionExtractionMutation.data
     },
-    rfpAnalysisDetails: {
+    rfpAnalysisStatus: {
       isLoading: rfpAnalysisMutation.isPending,
       error: rfpAnalysisMutation.error,
       data: rfpAnalysisMutation.data

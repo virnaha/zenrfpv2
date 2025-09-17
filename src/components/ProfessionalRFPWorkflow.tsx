@@ -75,47 +75,13 @@ interface ResponseData {
 
 export const ProfessionalRFPWorkflow: React.FC = () => {
   const { toast } = useToast();
-  const [currentStep, setCurrentStep] = useState<WorkflowStep>('generate');
+  const [currentStep, setCurrentStep] = useState<WorkflowStep>('dashboard');
   const [currentProject, setCurrentProject] = useState<RFPProject | null>(null);
   const [projects, setProjects] = useState<RFPProject[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Initialize with sample project for immediate testing
-  React.useEffect(() => {
-    const sampleProject: RFPProject = {
-      id: 'sample_project_1',
-      name: 'Customer Experience Platform RFP',
-      documentName: 'Sample RFP Document',
-      status: 'in_progress',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      questionsTotal: 5,
-      questionsAnswered: 2, // Show some progress
-      confidence: 85,
-      document: {
-        id: 'sample_doc_1',
-        name: 'Sample RFP Document',
-        size: 1024000,
-        content: 'This is a sample RFP document content for testing purposes. It contains questions about customer experience platforms, NPS surveys, security requirements, integrations, and pricing.',
-        uploadedAt: new Date(),
-        metadata: {
-          pages: 8,
-          wordCount: 2500,
-          questionsEstimate: 5
-        },
-        analysis: {
-          summary: 'RFP for customer experience platform selection',
-          keyTopics: ['NPS', 'Customer Experience', 'Security', 'Integrations', 'Pricing'],
-          complexity: 'medium',
-          estimatedResponseTime: '2-3 hours'
-        }
-      }
-    };
-
-    setCurrentProject(sampleProject);
-    setProjects([sampleProject]);
-  }, []);
+  // Start with no preloaded project; user can create a new one from the dashboard
 
   // Calculate overall progress
   const calculateProgress = useCallback((project: RFPProject) => {
@@ -203,8 +169,8 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-2xl font-bold text-foreground">RFP Response Generator</h1>
-              <p className="text-muted-foreground">Professional RFP response creation with Zenloop expertise</p>
+              <h1 className="text-2xl font-semibold tracking-tight text-foreground">zen-rfp generator</h1>
+              <p className="text-muted-foreground">professional rfp response creation with zenloop expertise</p>
             </div>
             {currentProject && (
               <div className="text-right">
@@ -217,7 +183,7 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
             )}
           </div>
 
-          <nav className="flex items-center space-x-6 overflow-x-auto">
+          <nav className="flex items-center space-x-6 overflow-x-auto" aria-label="RFP workflow steps">
             {steps.map((step, index) => {
               const Icon = step.icon;
               const status = getStepStatus(step.key, currentProject);
@@ -230,6 +196,8 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
                   <button
                     onClick={() => isAccessible && navigateToStep(step.key)}
                     disabled={!isAccessible}
+                    aria-current={isActive ? 'step' : undefined}
+                    aria-disabled={!isAccessible}
                     className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors min-w-0 ${
                       isActive
                         ? 'bg-primary text-primary-foreground'
@@ -328,7 +296,7 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
     <div className="min-h-screen bg-background">
       {renderWorkflowNavigation()}
 
-      <main className="container mx-auto px-6 py-8">
+      <main id="main" className="container mx-auto px-6 py-8">
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />

@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
 
 import { fileProcessor } from '../../lib/services/file-processor';
+import { supabaseService } from '../../lib/services/supabase-service';
 
 interface RFPUploadWizardProps {
   project: any;
@@ -153,7 +154,19 @@ export const RFPUploadWizard: React.FC<RFPUploadWizardProps> = ({
 
       setUploadedFile(completedFile);
 
-      // Update project with document
+      // Save to Supabase (best-effort)
+      try {
+        await supabaseService.uploadDocument(file, processedFile.content, {
+          description: 'RFP document',
+          category: 'rfp',
+          tags: []
+        });
+      } catch (e) {
+        // Non-fatal if remote save fails
+        console.warn('Supabase save skipped/failed:', e);
+      }
+
+      // Update project with document (local state)
       const updatedProject = {
         ...project,
         document: {
@@ -171,8 +184,8 @@ export const RFPUploadWizard: React.FC<RFPUploadWizardProps> = ({
       onProjectUpdate(updatedProject);
 
       toast({
-        title: "Document Uploaded Successfully",
-        description: `Processed ${wordCount} words with ~${questionsEstimate} questions detected`,
+        title: "Upload complete",
+        description: `Processed ${wordCount} words (~${questionsEstimate} questions detected).`,
       });
 
     } catch (error) {
@@ -183,6 +196,11 @@ export const RFPUploadWizard: React.FC<RFPUploadWizardProps> = ({
         error: errorMessage
       } : null);
       onError(`File processing failed: ${errorMessage}`);
+      toast({
+        title: 'Upload failed',
+        description: 'Please try again. If the issue persists, contact support.',
+        variant: 'destructive'
+      });
     } finally {
       setIsProcessing(false);
     }
@@ -316,6 +334,7 @@ export const RFPUploadWizard: React.FC<RFPUploadWizardProps> = ({
                   size="sm"
                   onClick={handleRemoveFile}
                   className="h-8 w-8 p-0"
+                  aria-label="Remove uploaded file"
                 >
                   <X className="h-4 w-4" />
                 </Button>

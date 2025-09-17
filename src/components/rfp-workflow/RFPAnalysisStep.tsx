@@ -88,14 +88,19 @@ export const RFPAnalysisStep: React.FC<RFPAnalysisStepProps> = ({
       onProjectUpdate(updatedProject);
 
       toast({
-        title: "Analysis Complete",
-        description: "RFP document has been successfully analyzed with Zenloop expertise",
+        title: "Analysis complete",
+        description: "Your document was analyzed successfully.",
       });
 
     } catch (error) {
       setAnalysisStatus('error');
       const errorMessage = error instanceof Error ? error.message : 'Analysis failed';
       onError(`Document analysis failed: ${errorMessage}`);
+      toast({
+        title: 'Analysis failed',
+        description: 'Please try again. If the issue persists, contact support.',
+        variant: 'destructive'
+      });
     } finally {
       setIsProcessing(false);
     }
@@ -125,9 +130,9 @@ export const RFPAnalysisStep: React.FC<RFPAnalysisStepProps> = ({
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-2xl font-bold mb-2">Document Analysis</h2>
+        <h2 className="text-2xl font-semibold mb-2 tracking-tight">document analysis</h2>
         <p className="text-muted-foreground">
-          AI-powered analysis of your RFP document with Zenloop expertise
+          ai-powered analysis of your rfp document with zenloop expertise
         </p>
       </div>
 
@@ -212,7 +217,7 @@ export const RFPAnalysisStep: React.FC<RFPAnalysisStepProps> = ({
             <CheckCircle2 className="h-4 w-4" />
             <AlertTitle>Analysis Complete</AlertTitle>
             <AlertDescription>
-              Your RFP has been analyzed with Zenloop expertise. Review the insights below and proceed to response generation.
+              your rfp has been analyzed with zenloop expertise. review the insights below and proceed to response generation.
             </AlertDescription>
           </Alert>
 

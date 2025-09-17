@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Plus, Search, Filter, MoreHorizontal, Calendar, Clock, Target,
   TrendingUp, Award, Users, FileText, CheckCircle2, AlertCircle,
@@ -34,11 +34,21 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
 
-  const filteredProjects = projects.filter(p =>
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.documentName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const id = setTimeout(() => setDebouncedSearch(searchTerm), 250);
+    return () => clearTimeout(id);
+  }, [searchTerm]);
+
+  const filteredProjects = useMemo(() => {
+    const query = debouncedSearch.toLowerCase();
+    if (!query) return projects;
+    return projects.filter(p =>
+      p.name.toLowerCase().includes(query) ||
+      p.documentName.toLowerCase().includes(query)
+    );
+  }, [projects, debouncedSearch]);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -84,10 +94,7 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-3xl font-bold">RFP Response Dashboard</h2>
-          <p className="text-muted-foreground">Manage your RFP projects and track progress</p>
-        </div>
+        <div />
         <Dialog open={showCreateDialog} onOpenChange={setShowCreateDialog}>
           <DialogTrigger asChild>
             <Button className="flex items-center gap-2">
@@ -216,7 +223,7 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
                 />
               </div>
             </div>
-            <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="outline" className="flex items-center gap-2" aria-label="Open filters">
               <Filter className="h-4 w-4" />
               Filters
             </Button>
@@ -230,13 +237,15 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
           <CardContent className="pt-6">
             <div className="text-center py-12">
               <FileText className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
-              <h3 className="text-lg font-semibold mb-2">No RFP Projects Yet</h3>
-              <p className="text-muted-foreground mb-6">
-                {projects.length === 0
-                  ? "Create your first RFP project to get started with professional response generation."
-                  : "No projects match your search criteria."
-                }
-              </p>
+              <h3 className="text-lg font-semibold mb-2">{projects.length === 0 ? 'No RFP Projects Yet' : 'No projects match your search'}</h3>
+              {projects.length === 0 ? (
+                <p className="text-muted-foreground mb-6">Create your first RFP project to get started with professional response generation.</p>
+              ) : (
+                <div className="flex items-center justify-center gap-3 mb-6">
+                  <p className="text-muted-foreground">Try adjusting your search or filters.</p>
+                  <Button variant="outline" size="sm" onClick={() => setSearchTerm('')} aria-label="Reset search">Reset</Button>
+                </div>
+              )}
               {projects.length === 0 && (
                 <Button onClick={() => setShowCreateDialog(true)} className="flex items-center gap-2">
                   <Plus className="h-4 w-4" />
@@ -249,7 +258,20 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.map((project) => (
-            <Card key={project.id} className="cursor-pointer hover:shadow-md transition-shadow">
+            <Card
+              key={project.id}
+              className="cursor-pointer hover:shadow-md transition-shadow focus:outline-none focus:ring-2 focus:ring-primary"
+              tabIndex={0}
+              role="button"
+              aria-label={`Open project ${project.name}`}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onProjectSelect(project);
+                }
+              }}
+              onClick={() => onProjectSelect(project)}
+            >
               <CardHeader className="pb-4">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -260,7 +282,7 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
                   </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                      <Button variant="ghost" size="sm" className="h-8 w-8 p-0" aria-label="Open project actions">
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -343,7 +365,7 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
               <h3 className="text-xl font-semibold mb-4">Get Started with Professional RFP Responses</h3>
               <p className="text-muted-foreground mb-6">
                 Our AI-powered RFP response generator helps you create professional, accurate responses
-                using Zenloop's expertise and knowledge base. Here's how it works:
+                using zenloop's expertise and knowledge base. here's how it works:
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-left">
@@ -373,7 +395,7 @@ export const RFPDashboard: React.FC<RFPDashboardProps> = ({
                   </div>
                   <div>
                     <h4 className="font-medium">3. Generate</h4>
-                    <p className="text-sm text-muted-foreground">Create responses with Zenloop expertise</p>
+                    <p className="text-sm text-muted-foreground">create responses with zenloop expertise</p>
                   </div>
                 </div>
 

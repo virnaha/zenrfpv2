@@ -37,8 +37,23 @@ class SupabaseService {
   }
 
   private initialize() {
-    // Using local processing mode - no external services needed
-    this.isConnected = false;
+    try {
+      const url = this.config.supabase.url;
+      const anonKey = this.config.supabase.anonKey;
+      // In demo mode these will be non-empty placeholders; we still create the client
+      if (url && anonKey) {
+        this.client = createClient<Database>(url, anonKey, {
+          auth: { persistSession: false }
+        });
+        this.isConnected = true;
+      } else {
+        this.isConnected = false;
+      }
+    } catch (error) {
+      console.warn('Supabase initialization failed, continuing without remote storage.', error);
+      this.isConnected = false;
+      this.client = null;
+    }
   }
 
   async createDocumentsTable(): Promise<boolean> {

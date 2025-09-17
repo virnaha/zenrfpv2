@@ -95,7 +95,7 @@ export const ResponseReviewPanel: React.FC<ResponseReviewPanelProps> = ({
         id: 'resp_1',
         questionId: 'q_1',
         questionText: 'Describe your platform\'s Net Promoter Score (NPS) survey capabilities, including automation features, benchmarking, and reporting functionality.',
-        response: `Zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
+        response: `zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
 
 Our platform provides automated NPS campaign management with smart targeting based on customer journey stages, behavioral triggers, and demographic segmentation. The system automatically distributes surveys via email, SMS, in-app notifications, and web intercepts.
 
@@ -110,7 +110,7 @@ Benchmarking capabilities include access to our comprehensive database of over 5
 Reporting functionality encompasses real-time dashboards, executive summaries, detailed analytics with drill-down capabilities, and automated report distribution. All reports can be customized and scheduled for regular delivery to stakeholders.`,
         confidence: 94,
         sources: [
-          { title: 'Zenloop NPS Product Documentation', content: 'Comprehensive guide to NPS survey automation, targeting, and benchmarking features...', relevance: 0.96 },
+          { title: 'zenloop NPS Product Documentation', content: 'Comprehensive guide to NPS survey automation, targeting, and benchmarking features...', relevance: 0.96 },
           { title: 'Industry Benchmark Database', content: 'Access to 500+ industry verticals with detailed NPS performance metrics...', relevance: 0.91 }
         ],
         status: 'review',
@@ -134,7 +134,7 @@ Reporting functionality encompasses real-time dashboards, executive summaries, d
         id: 'resp_2',
         questionId: 'q_2',
         questionText: 'What security certifications and compliance standards does your platform maintain (e.g., ISO 27001, SOC 2, GDPR)?',
-        response: `Zenloop maintains enterprise-grade security with comprehensive certifications and compliance standards that ensure the highest levels of data protection and regulatory adherence.
+        response: `zenloop maintains enterprise-grade security with comprehensive certifications and compliance standards that ensure the highest levels of data protection and regulatory adherence.
 
 Our current security certifications include:
 • ISO 27001:2013 certification for Information Security Management Systems
@@ -147,7 +147,7 @@ We undergo regular security audits by independent third parties and maintain com
 Data residency options are available to meet regional compliance requirements, with data centers in the EU and US that meet strict security and availability standards.`,
         confidence: 98,
         sources: [
-          { title: 'Zenloop Security Certifications', content: 'Complete overview of security certifications and compliance standards...', relevance: 0.98 },
+          { title: 'zenloop Security Certifications', content: 'Complete overview of security certifications and compliance standards...', relevance: 0.98 },
           { title: 'GDPR Compliance Documentation', content: 'Detailed GDPR compliance procedures and data processing agreements...', relevance: 0.92 }
         ],
         status: 'review',
@@ -163,7 +163,7 @@ Data residency options are available to meet regional compliance requirements, w
         id: 'resp_3',
         questionId: 'q_3',
         questionText: 'How does your platform handle closed-loop feedback management and automated follow-up workflows for detractors?',
-        response: `Zenloop's closed-loop feedback management system provides comprehensive automation for converting detractors into promoters through intelligent follow-up workflows.
+        response: `zenloop's closed-loop feedback management system provides comprehensive automation for converting detractors into promoters through intelligent follow-up workflows.
 
 Our automated workflow system includes:
 • Instant alert notifications when detractor responses are received
@@ -200,7 +200,7 @@ Advanced features include sentiment analysis of follow-up responses, integration
         id: 'resp_4',
         questionId: 'q_4',
         questionText: 'What integration capabilities do you offer for CRM systems, marketing automation platforms, and business intelligence tools?',
-        response: `Zenloop offers extensive integration capabilities with 200+ enterprise systems through our robust API and pre-built connectors.
+        response: `zenloop offers extensive integration capabilities with 200+ enterprise systems through our robust API and pre-built connectors.
 
 CRM System Integrations:
 • Salesforce, HubSpot, Microsoft Dynamics, and Pipedrive
@@ -235,7 +235,7 @@ Our RESTful API enables custom integrations with proprietary systems, and our te
         id: 'resp_5',
         questionId: 'q_5',
         questionText: 'Provide detailed pricing information including subscription tiers, implementation costs, and ongoing support fees.',
-        response: `Zenloop offers flexible pricing models designed to scale with your organization's needs and provide exceptional value at every level.
+        response: `zenloop offers flexible pricing models designed to scale with your organization's needs and provide exceptional value at every level.
 
 Our subscription tiers include:
 • Starter Plan: Ideal for small teams, includes core NPS functionality
