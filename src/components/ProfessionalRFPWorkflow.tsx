@@ -363,7 +363,7 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
 
       {renderWorkflowNavigation()}
 
-      <main id="main" className="container mx-auto px-6 py-8">
+      <div className="container mx-auto px-6 py-8">
         {error && (
           <Alert variant="destructive" className="mb-6">
             <AlertCircle className="h-4 w-4" />
@@ -373,7 +373,7 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
         )}
 
         {renderStepContent()}
-      </main>
+      </div>
     </div>
   );
 };
