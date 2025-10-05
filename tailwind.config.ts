@@ -19,10 +19,10 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['var(--font-geist-sans)', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+				sans: ['Geist', 'Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
 				inter: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
-				geist: ['var(--font-geist-sans)', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
-				mono: ['var(--font-geist-mono)', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
+				geist: ['Geist', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
+				mono: ['Geist Mono', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace']
 			},
 			colors: {
 				border: 'hsl(var(--border))',
