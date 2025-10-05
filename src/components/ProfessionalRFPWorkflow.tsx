@@ -239,8 +239,6 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
                     className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors min-w-0 ${
                       isActive
                         ? 'bg-primary text-primary-foreground'
-                        : isCompleted
-                        ? 'bg-green-100 text-green-800 hover:bg-green-200'
                         : isAccessible
                         ? 'text-muted-foreground hover:text-foreground hover:bg-muted'
                         : 'text-muted-foreground/50 cursor-not-allowed'
@@ -251,7 +249,6 @@ export const ProfessionalRFPWorkflow: React.FC = () => {
                       <div className="font-medium truncate">{step.label}</div>
                       <div className="text-xs opacity-75 truncate">{step.description}</div>
                     </div>
-                    {isCompleted && <CheckCircle2 className="h-3 w-3 flex-shrink-0" />}
                   </button>
                   {index < steps.length - 1 && (
                     <ArrowRight className="h-4 w-4 text-muted-foreground/50 flex-shrink-0" />

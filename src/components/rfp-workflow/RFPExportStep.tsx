@@ -72,7 +72,7 @@ const TEMPLATES = [
   {
     id: 'professional',
     name: 'Professional',
-    description: 'Clean, formal design with Zenloop branding'
+    description: 'Clean, formal design with zenloop branding'
   },
   {
     id: 'corporate',
@@ -132,7 +132,7 @@ export const RFPExportStep: React.FC<RFPExportStepProps> = ({
       const sampleResponses = [
         {
           questionText: 'Describe your platform\'s Net Promoter Score (NPS) survey capabilities, including automation features, benchmarking, and reporting functionality.',
-          response: `Zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
+          response: `zenloop offers industry-leading NPS survey capabilities with comprehensive automation and benchmarking features.
 
 Our platform provides automated NPS campaign management with smart targeting based on customer journey stages, behavioral triggers, and demographic segmentation. The system automatically distributes surveys via email, SMS, in-app notifications, and web intercepts.
 
@@ -147,13 +147,13 @@ Benchmarking capabilities include access to our comprehensive database of over 5
 Reporting functionality encompasses real-time dashboards, executive summaries, detailed analytics with drill-down capabilities, and automated report distribution. All reports can be customized and scheduled for regular delivery to stakeholders.`,
           confidence: 94,
           sources: [
-            { title: 'Zenloop NPS Product Documentation', content: 'Comprehensive guide to NPS survey automation...' },
+            { title: 'zenloop NPS Product Documentation', content: 'Comprehensive guide to NPS survey automation...' },
             { title: 'Industry Benchmark Database', content: 'Access to 500+ industry verticals...' }
           ]
         },
         {
           questionText: 'What security certifications and compliance standards does your platform maintain?',
-          response: `Zenloop maintains enterprise-grade security with comprehensive certifications and compliance standards that ensure the highest levels of data protection and regulatory adherence.
+          response: `zenloop maintains enterprise-grade security with comprehensive certifications and compliance standards that ensure the highest levels of data protection and regulatory adherence.
 
 Our current security certifications include:
 • ISO 27001:2013 certification for Information Security Management Systems
@@ -164,7 +164,7 @@ Our current security certifications include:
 We undergo regular security audits by independent third parties and maintain comprehensive audit trails for all system activities. Our security framework includes multi-factor authentication, role-based access controls, and continuous monitoring for potential threats.`,
           confidence: 98,
           sources: [
-            { title: 'Zenloop Security Certifications', content: 'Complete overview of security certifications...' },
+            { title: 'zenloop Security Certifications', content: 'Complete overview of security certifications...' },
             { title: 'GDPR Compliance Documentation', content: 'Detailed GDPR compliance procedures...' }
           ]
         }
@@ -177,7 +177,7 @@ We undergo regular security audits by independent third parties and maintain com
       const formattedDocument = documentFormatter.formatCompleteDocument(
         sampleResponses,
         project?.name || 'Customer Experience Platform RFP',
-        exportOptions.companyName || 'Zenloop',
+        exportOptions.companyName || 'zenloop',
         exportOptions.contactPerson,
         exportOptions.customCoverLetter
       );
@@ -318,7 +318,7 @@ We undergo regular security audits by independent third parties and maintain com
             <CheckCircle2 className="h-16 w-16 mx-auto mb-4 text-green-600" />
             <h3 className="text-xl font-semibold text-green-900 mb-2">RFP Response Complete!</h3>
             <p className="text-green-700">
-              Your professional RFP response has been generated using Zenloop expertise and is ready for export.
+              Your professional RFP response has been generated using zenloop expertise and is ready for export.
             </p>
           </div>
 
@@ -499,7 +499,7 @@ We undergo regular security audits by independent third parties and maintain com
 
                 <div className="flex items-center justify-between">
                   <div>
-                    <Label htmlFor="branding">Zenloop Branding</Label>
+                    <Label htmlFor="branding">zenloop Branding</Label>
                     <p className="text-sm text-muted-foreground">Company logos and styling</p>
                   </div>
                   <Switch
