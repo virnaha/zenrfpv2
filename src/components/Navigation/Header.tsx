@@ -25,12 +25,6 @@ export const navigationItems: NavigationItem[] = [
     description: 'Dashboard and project overview'
   },
   {
-    label: 'Knowledge Base',
-    path: '/knowledge-base',
-    icon: FolderOpen,
-    description: 'Manage company documents'
-  },
-  {
     label: 'Help',
     path: '/help',
     icon: HelpCircle,

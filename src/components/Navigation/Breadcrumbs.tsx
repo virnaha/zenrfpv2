@@ -16,10 +16,6 @@ interface BreadcrumbsProps {
 // Route to breadcrumb mapping
 const routeBreadcrumbMap: Record<string, BreadcrumbItem[]> = {
   '/': [{ label: 'Home', path: '/' }],
-  '/knowledge-base': [
-    { label: 'Home', path: '/' },
-    { label: 'Knowledge Base', path: '/knowledge-base' }
-  ],
   '/help': [
     { label: 'Home', path: '/' },
     { label: 'Help', path: '/help' }
