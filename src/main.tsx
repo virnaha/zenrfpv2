@@ -2,7 +2,7 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import { logConfigurationStatus } from './lib/config';
-import { GeistSans } from 'geist/font/sans';
+import { GeistSans } from 'geist/font';
 import { GeistMono } from 'geist/font/mono';
 
 // Log configuration status at startup
