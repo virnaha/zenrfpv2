@@ -109,3 +109,128 @@
     font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   }
 }
+
+/* Interactive Elements Animations */
+@layer components {
+  /* Button animations */
+  button,
+  [role="button"],
+  .btn {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  button:not(:disabled):hover,
+  [role="button"]:not(:disabled):hover,
+  .btn:not(:disabled):hover {
+    @apply scale-[1.02];
+  }
+
+  button:not(:disabled):active,
+  [role="button"]:not(:disabled):active,
+  .btn:not(:disabled):active {
+    @apply scale-[0.98];
+  }
+
+  button:disabled,
+  [role="button"]:disabled,
+  .btn:disabled {
+    @apply opacity-60 cursor-not-allowed;
+  }
+
+  /* Link animations */
+  a:not(.no-animation) {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  a:not(.no-animation):hover {
+    @apply scale-[1.02];
+  }
+
+  a:not(.no-animation):active {
+    @apply scale-[0.98];
+  }
+
+  /* Card hover effects */
+  .card-interactive {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  .card-interactive:hover {
+    @apply scale-[1.01] shadow-lg;
+  }
+
+  .card-interactive:active {
+    @apply scale-[0.99];
+  }
+
+  /* Input focus animations */
+  input:not([type="checkbox"]):not([type="radio"]),
+  textarea,
+  select {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  input:not([type="checkbox"]):not([type="radio"]):focus,
+  textarea:focus,
+  select:focus {
+    @apply scale-[1.01];
+  }
+
+  /* Checkbox and radio animations */
+  input[type="checkbox"],
+  input[type="radio"] {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  input[type="checkbox"]:hover,
+  input[type="radio"]:hover {
+    @apply scale-110;
+  }
+
+  input[type="checkbox"]:active,
+  input[type="radio"]:active {
+    @apply scale-95;
+  }
+
+  /* Icon button animations */
+  [role="button"] svg,
+  button svg {
+    @apply transition-transform duration-200 ease-in-out;
+  }
+
+  /* Badge animations */
+  .badge {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Switch/Toggle animations */
+  [role="switch"] {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  /* Tab animations */
+  [role="tab"] {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  [role="tab"]:hover {
+    @apply scale-[1.02];
+  }
+
+  [role="tab"]:active {
+    @apply scale-[0.98];
+  }
+
+  /* Dropdown menu item animations */
+  [role="menuitem"] {
+    @apply transition-all duration-200 ease-in-out;
+  }
+
+  [role="menuitem"]:hover {
+    @apply scale-[1.01];
+  }
+
+  [role="menuitem"]:active {
+    @apply scale-[0.99];
+  }
+}
